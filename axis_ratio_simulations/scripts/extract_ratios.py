@@ -1,6 +1,6 @@
 
 import sys
-sys.path.append('/Users/danecross/Desktop/research/SIDM_glob_clusters/')
+sys.path.append('.')
 
 import os 
 import shutil
@@ -35,7 +35,7 @@ maxnum = max(dirs)
 
 print("Starting extraction:")
 
-i = 0 ; M=[] ; T=[] ; A = []
+i = 0 ; M=[] ; T=[] ; A = [] ; P = []
 while i < maxnum:
     file_conf3 = filepath+"/conf.3_"+str(i)
     if not os.path.exists(file_conf3):
@@ -48,6 +48,7 @@ while i < maxnum:
     M +=[mm] 
     T += [t]
     A += [axes]
+    P += [p]
 
     if i%30==0:
         print(i)
@@ -72,7 +73,8 @@ N = len(p)
 cluster_data = np.array([N, HALF_MASS_RADIUS])
 pickle.dump(cluster_data, open(os.path.join(newdir, "cluster_data.pkl"), "wb"))
 
-
+P = np.array(P)
+pickle.dump(P, open(os.path.join(newdir, "positions.pkl"), "wb"))
 
 
 
