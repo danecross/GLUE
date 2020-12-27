@@ -51,13 +51,13 @@ for i in range(len(names)):
     print(len(x), len(a))
     
     fig, ax = plt.subplots(4, 1, sharex=True, sharey=False)
-    ax[0].plot(a/c, label="b/a ratio", color=colors[0]) ; ax[0].set_title("ratios")
-    ax[0].plot(b/c, label="c/a ratio", color=colors[1]) ; ax[0].legend()
+    ax[0].plot(x, a/c, label="b/a ratio", color=colors[0]) ; ax[0].set_title("ratios")
+    ax[0].plot(x, b/c, label="c/a ratio", color=colors[1]) ; ax[0].legend()
     ax[0].set_ylim((0, 1.3))
 
-    ax[1].plot(a, color=colors[0]) ; ax[1].set_title("a (x-axis)")
-    ax[2].plot(b, color=colors[1]) ; ax[2].set_title("b (y-axis)")
-    ax[3].plot(c, color=colors[2]) ; ax[3].set_title("c (z-axis)")
+    ax[1].plot(x, a, color=colors[0]) ; ax[1].set_title("a (x-axis)")
+    ax[2].plot(x, b, color=colors[1]) ; ax[2].set_title("b (y-axis)")
+    ax[3].plot(x, c, color=colors[2]) ; ax[3].set_title("c (z-axis)")
 
     fig.tight_layout(pad=3.0)
     plt.savefig("../plots/"+names[i]+"_analysis.png")
