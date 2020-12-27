@@ -1,7 +1,5 @@
 
 import sys
-sys.path.append('.')
-
 import os 
 import shutil
 
@@ -63,7 +61,7 @@ M = np.array(M)
 pickle.dump(M, open(os.path.join(newdir, "M.pkl"), "wb"))
 
 T = np.array(T)
-pickle.dump(M, open(os.path.join(newdir, "T.pkl"), "wb"))
+pickle.dump(T, open(os.path.join(newdir, "T.pkl"), "wb"))
 
 A = np.array(A)
 pickle.dump(A, open(os.path.join(newdir, "axes.pkl"), "wb"))
