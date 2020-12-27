@@ -42,15 +42,14 @@ M_rot, vecs_rot = iterate(rotated_pos)
 
 orig_rotated = np.matmul(rotation_matrix, vecs)
 
-print(orig_rotated)
-print(vecs_rot)
 
 '''
+
 from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 fig = plt.figure()
 ax1 = fig.add_subplot(111, projection='3d')
-ax2 = fig.add_subplot(121, projection='3d')
+ax2 = fig.add_subplot(122, projection='3d')
 
 #plot star positions
 ax1.plot(pos[:,0], pos[:,1], pos[:,2], '.', markersize=1, color="blue", label="original")
@@ -68,6 +67,7 @@ ax2.plot([-a*vecs_rot[2][0], a*vecs_rot[2][0]], [-a*vecs_rot[2][1], a*vecs_rot[2
 
 plt.legend()
 plt.show()
+
 '''
 
 print("tests successful")
