@@ -45,7 +45,7 @@ while i < maxnum:
     HALF_MASS_RADIUS = np.median([np.sqrt(p[i][0]**2 + p[i][1]**2 + p[i][2]**2) for i in range(len(p))])
     
     #cut stars outside the half mass radius
-    p = [p[i] for i in range(len(p)) if np.sqrt(p[i][0]**2 + p[i][1]**2 + p[i][2]**2) <= HALF_MASS_RADIUS]
+    p = np.array([p[i] for i in range(len(p)) if np.sqrt(p[i][0]**2 + p[i][1]**2 + p[i][2]**2) <= HALF_MASS_RADIUS])
 
     mm, axes = ac.iterate(p, converge_radius=10e-7, M_last=m_last)
     M +=[mm] 
