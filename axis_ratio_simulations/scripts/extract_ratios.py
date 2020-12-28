@@ -34,6 +34,7 @@ maxnum = max(dirs)
 print("Starting extraction:")
 
 i = 0 ; M=[] ; T=[] ; A = [] ; P = []
+m_last = [1, 1, 1]
 while i < maxnum:
     file_conf3 = filepath+"/conf.3_"+str(i)
     if not os.path.exists(file_conf3):
@@ -42,11 +43,12 @@ while i < maxnum:
     
     t, _, _, p, _ = nb.read_conf3(file_conf3)
     
-    mm, axes = ac.iterate(p, converge_radius=10e-7)
+    mm, axes = ac.iterate(p, converge_radius=10e-7, M_last=m_last)
     M +=[mm] 
     T += [t]
     A += [axes]
     P += [p]
+    m_last = mm
 
     if i%30==0:
         print(i)

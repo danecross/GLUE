@@ -1,0 +1,19 @@
+#!/bin/bash
+#SBATCH -p gpu
+#SBATCH --gres=gpu:v100:1
+#SBATCH -J ratio-extract
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=8
+#SBATCH --time=12:00:00
+#SBATCH -o log
+#SBATCH --mail-user=dncross
+#SBATCH --mail-type=BEGIN,END
+
+python extract_ratios.py 0p3
+python extract_ratios.py 0p6
+python extract_ratios.py 1p2
+
+
+
+
