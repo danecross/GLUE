@@ -48,11 +48,12 @@ for i in range(len(names)):
     b = np.array([M[i][j][1] for j in range(len(M[i]))])
     c = np.array([M[i][j][2] for j in range(len(M[i]))])
 
-    print(len(x), len(a))
+    ac = np.sqrt(a/c)
+    bc = np.sqrt(b/c)
     
     fig, ax = plt.subplots(4, 1, sharex=True, sharey=False)
-    ax[0].plot(x, a/c, label="b/a ratio", color=colors[0]) ; ax[0].set_title("ratios")
-    ax[0].plot(x, b/c, label="c/a ratio", color=colors[1]) ; ax[0].legend()
+    ax[0].plot(x, ac, label="b/a ratio", color=colors[0]) ; ax[0].set_title("ratios")
+    ax[0].plot(x, bc, label="c/a ratio", color=colors[1]) ; ax[0].legend()
     ax[0].set_ylim((0, 1.3))
 
     ax[1].plot(x, a, color=colors[0]) ; ax[1].set_title("a (x-axis)")
