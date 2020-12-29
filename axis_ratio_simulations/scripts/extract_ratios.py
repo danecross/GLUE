@@ -31,6 +31,9 @@ for i in range(len(dirs)):
         dirs[i] = 0
 maxnum = max(dirs)
 
+t, _, _, p, _ = nb.read_conf3(filepath+"/conf.3_0")
+HALF_MASS_RADIUS = np.median([np.sqrt(p[i][0]**2 + p[i][1]**2 + p[i][2]**2) for i in range(len(p))])
+
 print("Starting extraction:")
 
 i = 0 ; M=[] ; T=[] ; A = [] ; P = []
@@ -42,7 +45,6 @@ while i < maxnum:
         continue
     
     t, _, _, p, _ = nb.read_conf3(file_conf3)
-    HALF_MASS_RADIUS = np.median([np.sqrt(p[i][0]**2 + p[i][1]**2 + p[i][2]**2) for i in range(len(p))])
     
     #cut stars outside the half mass radius
     p = np.array([p[i] for i in range(len(p)) if np.sqrt(p[i][0]**2 + p[i][1]**2 + p[i][2]**2) <= HALF_MASS_RADIUS])
