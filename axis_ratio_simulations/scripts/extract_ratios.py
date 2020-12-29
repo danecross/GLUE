@@ -1,10 +1,12 @@
 
 import sys
+sys.path.append("../../")
 import os 
 import shutil
 
 import nbody6pp_out as nb
 import axis_convergence as ac
+import useful_functions as uf
 
 import pickle
 import numpy as np
@@ -48,7 +50,7 @@ while i < maxnum:
     
     #cut stars outside the half mass radius
     p = np.array([p[i] for i in range(len(p)) if np.sqrt(p[i][0]**2 + p[i][1]**2 + p[i][2]**2) <= HALF_MASS_RADIUS])
-
+    
     mm, axes = ac.iterate(p, converge_radius=10e-7, M_last=m_last)
     M +=[mm] 
     T += [t]
