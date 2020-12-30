@@ -31,19 +31,21 @@ M = [pickle.load(open("../data/pickled_data/"+ filenames[i] +"/M.pkl", "rb")) fo
 T = [pickle.load(open("../data/pickled_data/"+ filenames[i] +"/T.pkl", "rb")) for i in range(len(filenames))]
 
 # half-mass relaxation data for the x-axis
-cluster_data = [pickle.load(open("../data/pickled_data/"+ filenames[i] +"/cluster_data.pkl", "rb")) for i in range(len(filenames))]
+#cluster_data = [pickle.load(open("../data/pickled_data/"+ filenames[i] +"/cluster_data.pkl", "rb")) for i in range(len(filenames))]
 N = [50000 for i in range(3)]
-r_h = [cluster_data[i][1] for i in range(len(cluster_data))]
+#r_h = [cluster_data[i][1] for i in range(len(cluster_data))]
 
 fig_full, ax_full = plt.subplots(3, 1, sharex=True, sharey=True)
 fig_full.set_size_inches(20, 20)
+
+r_h = [2.53, 2.28, 1.64]
 
 names = ["0.3" , "0.6", "1.2"] 
 for i in range(len(names)):
 
     hmrt = (0.138)*N[i]*(r_h[i]**(3/2))/np.log(0.11*N[i])
     x = [T[i][j]/hmrt for j in range(len(T[i]))]
-    print(hmrt, r_h[i])
+    print(len(T[i]),hmrt, r_h[i])
 
     a = np.array([M[i][j][0] for j in range(len(M[i]))])
     b = np.array([M[i][j][1] for j in range(len(M[i]))])
@@ -69,7 +71,7 @@ for i in range(len(names)):
     ax_full[i].plot(x, b/c, label="c/a ratio", color=colors[1])
 
 
-
+ax_full[2].set_ylim(0.2,1.05)
 ax_full[2].legend(bbox_to_anchor=(0.5, -0.6), loc='lower center')
 fig_full.tight_layout(pad=3.0)
 fig_full.savefig("../plots/plotted_ratios.png")
