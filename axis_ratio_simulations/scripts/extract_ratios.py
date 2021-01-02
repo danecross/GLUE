@@ -52,6 +52,9 @@ print("Starting extraction:")
 
 M=[] ; T=[] ; A = [] ; P = []
 m_last = [1, 1, 1]
+axes_last = [[1,0,0],
+             [0,1,0],
+             [0,0,1]]
 while i < maxnum:
     file_conf3 = filepath+"/conf.3_"+str(i)
     if not os.path.exists(file_conf3):
@@ -62,13 +65,11 @@ while i < maxnum:
     
     #cut stars outside the half mass radius
     p = np.array([p[i] for i in range(len(p)) if np.sqrt(p[i][0]**2 + p[i][1]**2 + p[i][2]**2) <= HALF_MASS_RADIUS])
-    
-    mm, axes = ac.iterate(p, converge_radius=10e-7, M_last=m_last)
+  
+    mm, axes = ac.iterate(p, converge_radius=10e-7, M_last=m_last, evecs_last=axes_last)
     M +=[mm] 
     T += [t]
-    A += [axes]
-    P += [p]
-    m_last = mm
+    m_last = mm ; axes_last = axes
 
     if i%30==0:
         print(i)
