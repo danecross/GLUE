@@ -41,6 +41,10 @@ def iterate(p, M_last=[1, 1, 1], evecs_last=empty_coords, maxiter=25, converge_r
         p = _rotate_coords(evecs_last, p)
         q = _q_calc(p[:,0], p[:,1], p[:,2], M_last)
 
+        # re-center coordinates
+        center = [np.average(p[:,0]), np.average(p[:,1]), np.average(p[:,2])]
+        p = np.array([[p[i,0]-center[0], p[i,1]-center[1], p[i,2]-center[2]] for i in range(len(p))])
+
         #iterate:
         i = 0
         while (np.abs((M[1]/M[0])-(M_last[1]/M_last[0]))>converge_radius\
