@@ -70,11 +70,11 @@ def _rotate_coords(evecs, p):
     vec_new = [np.linalg.inv(np.array(evecs)).dot(coord) for coord in p]
     return np.array(vec_new)
 
-empty_coords = [[1,0,0],
-                [0,1,0],
-                [0,0,1]]
+identity = [[1,0,0],
+            [0,1,0],
+            [0,0,1]]
 
-def iterate(p, M_last=[1, 1, 1], evecs_last=empty_coords, maxiter=25, converge_radius=10e-4):
+def iterate(p, M_last=[1, 1, 1], evecs_last=identity, maxiter=25, converge_radius=10e-4):
         #starting points
         M = [1, .1, .1]
         p = _rotate_coords(evecs_last, p)
@@ -97,6 +97,34 @@ def iterate(p, M_last=[1, 1, 1], evecs_last=empty_coords, maxiter=25, converge_r
                 i+=1 
 
         return M, evecs
+
+
+def iterate_2D(p):
+    p_2d = _collapse(p)
+
+
+def _collapse(p):
+    
+    x = p[:][0] ; y = p[:][1] ; z = p[:][2]
+    
+    max_x = np.max(x) ; max_y = np.max(y) ; max_z = np.max(z) 
+    min_x = np.min(x) ; min_y = np.min(y) ; min_z = np.min(z) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

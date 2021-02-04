@@ -1,4 +1,4 @@
 
-axis_ratio_simulations/data/outputs_*
-axis_ratio_simulations/data/pickled_data/*/positions.pkl
+data/outputs_*
+data/pickled_data/*/positions.pkl
 
