@@ -24,19 +24,15 @@ if not os.path.exists(filepath):
 
 #get number of files
 dirs = os.listdir(filepath)
-for i in range(len(dirs)):
-    try:
-        dirs[i] = int(dirs[i][7:])
-    except:
-        dirs[i] = 0
-maxnum = max(dirs)
+conf3_numbers = [int(d[7:]) for d in dirs if d[7:].isdigit()]
+maxnum = max(conf3_numbers)
 
 t, _, _, p, _ = nb.read_conf3(filepath+"/conf.3_0")
 HALF_MASS_RADIUS = np.median([np.sqrt(p[i][0]**2 + p[i][1]**2 + p[i][2]**2) for i in range(len(p))])
 
 print("Starting extraction:")
 
-M, T = ac.extract_ratios(filepath, i, maxnum, HALF_MASS_RADIUS, lower_shell=.1, upper_shell=.2)
+M, T = ac.extract_ratios(filepath, maxnum, HALF_MASS_RADIUS, lower_shell=.1, upper_shell=.2)
 M = np.array(M)
 T = np.array(T)
 
