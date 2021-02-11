@@ -5,7 +5,7 @@ import nbody6pp_out as nb
 import numpy as np
 from scipy.stats import norm
 
-def extract_ratios(filepath, maxiter, HALF_MASS_RADIUS, lower_shell=0, upper_shell=1):
+def extract_ratios(filepath, maxiter, lower_shell=0, upper_shell=1):
     M=[] ; T=[] ; A = [] ; P = []
     m_last = [1, 1, 1]
     axes_last = [[1,0,0],
@@ -20,8 +20,9 @@ def extract_ratios(filepath, maxiter, HALF_MASS_RADIUS, lower_shell=0, upper_she
             continue
 
         t, _, _, p, _ = nb.read_conf3(file_conf3)
-
+        
         #cut the desired stars
+        HALF_MASS_RADIUS = np.median([np.sqrt(p[i][0]**2 + p[i][1]**2 + p[i][2]**2) for i in range(len(p))])
         p = get_stars(p, HALF_MASS_RADIUS, lower_shell, upper_shell)
 
         mm, axes = iterate(p, converge_radius=10e-7, M_last=m_last, evecs_last=axes_last)

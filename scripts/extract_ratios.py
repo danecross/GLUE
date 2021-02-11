@@ -37,12 +37,9 @@ dirs = os.listdir(filepath)
 conf3_numbers = [int(d[7:]) for d in dirs if d[7:].isdigit()]
 maxnum = max(conf3_numbers)
 
-t, _, _, p, _ = nb.read_conf3(filepath+"/conf.3_0")
-HALF_MASS_RADIUS = np.median([np.sqrt(p[i][0]**2 + p[i][1]**2 + p[i][2]**2) for i in range(len(p))])
-
 print("Starting extraction:")
 
-M, T = ac.extract_ratios(filepath, maxnum, HALF_MASS_RADIUS, lower_shell=lower_shell, upper_shell=upper_shell)
+M, T = ac.extract_ratios(filepath, maxnum, lower_shell=lower_shell, upper_shell=upper_shell)
 M = np.array(M)
 T = np.array(T)
 
