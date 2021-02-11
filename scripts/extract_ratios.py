@@ -9,11 +9,21 @@ import axis_convergence as ac
 import pickle
 import numpy as np
 
-if len(sys.argv)==1:
-    print("must put omega value to extract. options: 0p6 for 0.6, etc")
-    exit()
-if sys.argv[1][1]!="p":
-    print("must put parseable omega value: e.g. for 0.6 --> 0p6")
+import argparse
+parser = argparse.ArgumentParser()
+
+parser.add_argument("omega", help="omega value to extract. options: [0p3, 0p6, 1p2]", type=str)
+parser.add_argument("--lower_shell", help="lower shell percentage", default=0.0, type=float)
+parser.add_argument("--upper_shell", help="upper shell percentage", default=1.0, type=float)
+args = parser.parse_args()
+
+omega = args.omega
+lower_shell = args.lower_shell
+upper_shell = args.upper_shell
+print(omega, lower_shell, upper_shell)
+
+if lower_shell >= upper_shell:
+    print("error: lower_shell value must be smaller than upper_shell")
     exit()
 
 filepath = "../data/outputs_"+sys.argv[1]+"/conf3s"
@@ -32,7 +42,7 @@ HALF_MASS_RADIUS = np.median([np.sqrt(p[i][0]**2 + p[i][1]**2 + p[i][2]**2) for 
 
 print("Starting extraction:")
 
-M, T = ac.extract_ratios(filepath, maxnum, HALF_MASS_RADIUS, lower_shell=.1, upper_shell=.2)
+M, T = ac.extract_ratios(filepath, maxnum, HALF_MASS_RADIUS, lower_shell=lower_shell, upper_shell=upper_shell)
 M = np.array(M)
 T = np.array(T)
 
