@@ -46,7 +46,7 @@ M, T = ac.extract_ratios(filepath, maxnum, HALF_MASS_RADIUS, lower_shell=lower_s
 M = np.array(M)
 T = np.array(T)
 
-newdir = "../data/pickled_data/"+sys.argv[1]
+newdir = "../data/pickled_data/"+sys.argv[1]+"_"+str(lower_shell)+"_"+str(upper_shell)
 if os.path.exists(newdir):
     shutil.rmtree(newdir)
 os.mkdir(newdir)
