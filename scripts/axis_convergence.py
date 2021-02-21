@@ -5,7 +5,7 @@ import nbody6pp_out as nb
 import numpy as np
 from scipy.stats import norm
 
-def extract_ratios(filepath, maxiter, lower_shell=0, upper_shell=1, is_2d=False):
+def extract_ratios(filepath, maxiter, lower_shell=0, upper_shell=1, is_2d=False, is_percentile=False):
     M=[] ; T=[] ; A = [] ; P = []
     if is_2d:
         m_last = [1,1] ; axes_last = np.identity(2)
@@ -23,7 +23,7 @@ def extract_ratios(filepath, maxiter, lower_shell=0, upper_shell=1, is_2d=False)
         
         #cut the desired stars
         HALF_MASS_RADIUS = np.median([np.sqrt(p[i][0]**2 + p[i][1]**2 + p[i][2]**2) for i in range(len(p))])
-        p = get_stars(p, HALF_MASS_RADIUS, lower_shell, upper_shell)
+        p = get_stars(p, HALF_MASS_RADIUS, lower_shell, upper_shell, is_percentile)
         
         if is_2d:
             mm, axes = iterate_2D(p, converge_radius=10e-7, M_last=m_last, evecs_last=axes_last)
@@ -39,11 +39,20 @@ def extract_ratios(filepath, maxiter, lower_shell=0, upper_shell=1, is_2d=False)
 
     return M, T
 
-def get_stars(p, half_mass_radius, lower_shell=0, upper_shell=100):
+def get_stars(p, half_mass_radius, lower_shell=0, upper_shell=1, is_percentile=False):
 
     radii = [np.sqrt(x**2 + y**2 + z**2) for x,y,z in p]
-    p_new = np.array([p[i] for i in range(len(p)) if radii[i] <= half_mass_radius*upper_shell\
+    
+    if is_percentile:
+        sorted_stars = [pi for _,pi in sorted(zip(radii,p))]
+        lower_index = int(lower_shell*len(p))
+        upper_index = int(upper_shell*len(p))
+        p_new = p[lower_index:upper_index]
+    else:
+        p_new = np.array([p[i] for i in range(len(p)) if radii[i] <= half_mass_radius*upper_shell\
                                                          and radii[i] >= half_mass_radius*lower_shell])
+    
+
     return p_new
 
 def _q_calc(x, y, z, M):
