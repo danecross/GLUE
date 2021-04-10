@@ -22,8 +22,12 @@ def extract_ratios(filepath, maxiter, lower_shell=0, upper_shell=1, is_2d=False,
         t, _, _, p, _ = nb.read_conf3(file_conf3)
         
         #cut the desired stars
-        HALF_MASS_RADIUS = np.median([np.sqrt(p[i][0]**2 + p[i][1]**2 + p[i][2]**2) for i in range(len(p))])
-        p = get_stars(p, HALF_MASS_RADIUS, lower_shell, upper_shell, is_percentile)
+        if not is_percentile:
+            # half mass radius computation only works for equal-mass systems
+            HMR = np.median([np.sqrt(p[i][0]**2 + p[i][1]**2 + p[i][2]**2) for i in range(len(p))])
+            p = get_stars(p, half_mass_radius=HMR, lower_shell=lower_shell, upper_shell=upper_shell)
+        else:
+            p = get_stars(p, lower_shell=lower_shell, upper_shell=upper_shell, is_percentile=True)
         
         if is_2d:
             mm, axes = iterate_2D(p, converge_radius=10e-7, M_last=m_last, evecs_last=axes_last)
@@ -39,15 +43,18 @@ def extract_ratios(filepath, maxiter, lower_shell=0, upper_shell=1, is_2d=False,
 
     return M, T
 
-def get_stars(p, half_mass_radius, lower_shell=0, upper_shell=1, is_percentile=False):
+def get_stars(p, half_mass_radius=None, lower_shell=0, upper_shell=1, is_percentile=False):
 
-    radii = [np.sqrt(x**2 + y**2 + z**2) for x,y,z in p]
+    if len(p[0])==3:
+        radii = [np.sqrt(x**2 + y**2 + z**2) for x,y,z in p]
+    else:
+        radii = [np.sqrt(x**2 + y**2) for x,y in p]
     
     if is_percentile:
         sorted_stars = [pi for _,pi in sorted(zip(radii,p))]
         lower_index = int(lower_shell*len(p))
         upper_index = int(upper_shell*len(p))
-        p_new = p[lower_index:upper_index]
+        p_new = np.array(sorted_stars[lower_index:upper_index])
     else:
         p_new = np.array([p[i] for i in range(len(p)) if radii[i] <= half_mass_radius*upper_shell\
                                                          and radii[i] >= half_mass_radius*lower_shell])
