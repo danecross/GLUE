@@ -1,51 +1,22 @@
-
-filename = "../data/ethan_data/snap.dat.0300"
-f = open(filename, 'r')
-
-
-x = [] ; y = [] ; masses = []
-for l in f:
-    row = l.split()
-    masses += [float(row[2])]
-    x += [float(row[2])] ; y += [float(row[3])] 
-
-f.close()
-
-import axis_convergence as ac
 import numpy as np
+from snapshot_analysis import get_eccentricities
 
-y = list(y - np.average(y))
+coords = np.load("../data/ethan_data/corrected_coords.npy", allow_pickle=True)
+x = [coords[i][0] for i in range(len(coords))]
+y = [coords[i][1] for i in range(len(coords))]
 
 # split the data into radial cuts
 
-radial_cuts = list(np.load("../data/ethan_data/radii.npy"))
-radial_cuts.reverse()
+radial_cut_1 = list(np.load("../data/ethan_data/radii.npy"))
+radial_cut_1.reverse()
+eccs1, _ = get_eccentricities(radial_cut_1, x, y)
+np.save("../data/ethan_data/eccentricities_1.npy", eccs1)
 
-r = np.array([np.sqrt(x[i]**2 + y[i]**2) for i in range(len(x))])
-x = np.array([x for _,x in zip(r,x)])
-y = np.array([y for _,y in zip(r,y)])
-
-groups = []
-lower = 0
-for upper in radial_cuts:
-
-    cut = (r<=upper) ; rcut = r[cut] 
-    xcut = x[cut] ; ycut = y[cut]
-    cut = (rcut>lower)
-    xcut = xcut[cut] ; ycut = ycut[cut]
-
-    new_group = [[xcut[i], ycut[i]] for i in range(len(xcut))]
-    groups += [new_group]
-    
-    lower = upper
-
-# analyze each cut
-
-groups = [np.asarray(g) for g in groups]
-
-M = [ac.iterate_2D(group)[0] for group in groups] 
-eccentricities = [np.sqrt(1-(m[0]/m[1])**2) for m in M]
-
-np.save("../data/ethan_data/eccentricities.npy", eccentricities)
-
+radial_cut_2 = [] ; last_r = 0
+for r in radial_cut_1:
+    radial_cut_2 += [(last_r+r)/2]
+    last_r = r
+eccs2, g = get_eccentricities(radial_cut_2, x, y)
+np.save("../data/ethan_data/eccentricities_2.npy", eccs2)
+np.save("../data/ethan_data/coord_groups.npy", g)
 
