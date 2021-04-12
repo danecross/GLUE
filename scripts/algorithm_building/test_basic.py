@@ -69,8 +69,6 @@ except AssertionError:
     print("a/c |", np.sqrt(M_rot[0]/M_rot[2]),"|", c/a,"|", np.abs(np.sqrt(M_rot[0]/M_rot[2])-c/a)<0.1)
 
 
-
-
 print("tests successful")
 
 

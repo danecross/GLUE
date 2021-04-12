@@ -1,6 +1,4 @@
 
-#TODO
-# change the time axes to half mass relaxation time so you know if you just need to run the simulations for much longere
 
 import sys
 sys.path.append('/Users/danecross/Desktop/research/SIDM_glob_clusters/')
