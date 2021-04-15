@@ -43,14 +43,14 @@ def extract_ratios(filepath, maxiter, lower_shell=0, upper_shell=1, is_2d=False,
 
     return M, T
 
-def get_stars(p, half_mass_radius=None, lower_shell=0, upper_shell=1, is_percentile=False):
+def get_stars(p, radius=None, lower_shell=0, upper_shell=1):
 
     if len(p[0])==3:
         radii = [np.sqrt(x**2 + y**2 + z**2) for x,y,z in p]
     else:
         radii = [np.sqrt(x**2 + y**2) for x,y in p]
     
-    if is_percentile:
+    if half_mass_radius is None:
         sorted_stars = [pi for _,pi in sorted(zip(radii,p))]
         lower_index = int(lower_shell*len(p))
         upper_index = int(upper_shell*len(p))
@@ -158,22 +158,6 @@ def _M_calc_2d(p, q):
     eigenvalues, eigenvectors = np.linalg.eig(M)
 
     return np.array(eigenvalues), eigenvectors
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
