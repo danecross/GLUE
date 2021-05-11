@@ -33,7 +33,7 @@ def extract_ratios(filepath, maxiter, lower_shell=0, upper_shell=1, is_2d=False,
             mm, axes = iterate_2D(p, converge_radius=10e-7, M_last=m_last, evecs_last=axes_last)
         else:
             mm, axes = iterate(p, converge_radius=10e-7, M_last=m_last, evecs_last=axes_last)
-        
+
         M +=[mm] ; T += [t]
         m_last = mm ; axes_last = axes
 
@@ -64,7 +64,6 @@ def get_stars(p, radius=None, lower_shell=0, upper_shell=1):
 
 def _q_calc(x, y, z, M):
     
-    M.sort()
     ac = np.sqrt(M[0]/M[2])
     bc = np.sqrt(M[1]/M[2])
 
@@ -84,7 +83,7 @@ def _M_calc(p, q):
     M[1,0]=M[0,1] ; M[2,0]=M[0,2] ; M[2,1]=M[1,2]
 
     eigenvalues, eigenvectors = np.linalg.eig(M)
-        
+    
     return np.array(eigenvalues), eigenvectors
 
 def _rotate_coords(evecs, p, is_2d=False):
@@ -105,23 +104,24 @@ def iterate(p, M_last=[1, 1, 1], evecs_last=np.identity(3), maxiter=25, converge
     p = np.array([[p[i,0]-center[0], p[i,1]-center[1], p[i,2]-center[2]] for i in range(len(p))])
 
     #iterate:
-    i = 0
+    i = 0 ; evecs = np.identity(3)
     while (np.abs((M[1]/M[0])-(M_last[1]/M_last[0]))>converge_radius\
           or np.abs((M[2]/M[0])-(M_last[2]/M_last[0])) > converge_radius)\
           and i < maxiter:
         M_last = M
-        M, evecs = _M_calc(p, q)
+        M, evecs_new = _M_calc(p, q) 
+        evecs = [np.linalg.inv(np.array(evecs_new)).dot(v) for v in evecs]
+
         q_last = q
-        p = _rotate_coords(evecs, p)
+        p = _rotate_coords(evecs_new, p)
         q = _q_calc(p[:,0], p[:,1], p[:,2], M)
         i+=1 
 
     return M, evecs
 
-def iterate_2D(p, M_last=[1, 1], evecs_last=np.identity(2), maxiter=25, converge_radius=10e-4):
+def iterate_2D(p, maxiter=25, converge_radius=10e-4):
    
-    M = [1, .1]  
-    p = _rotate_coords(evecs_last, p, is_2d=True)
+    M = [1, .1] ; M_last = [1,1]
     q = _q_calc_2d(p[:,0], p[:,1], M_last)
 
     #recenter coordinates
@@ -129,19 +129,20 @@ def iterate_2D(p, M_last=[1, 1], evecs_last=np.identity(2), maxiter=25, converge
     p = np.array([[p[i,0]-center[0], p[i,1]-center[1]] for i in range(len(p))])
 
     #iterate
-    i = 0 
-    while np.abs((M[1]/M[0])-(M_last[1]/M_last[0]))>converge_radius and i < maxiter:
+    i = 0 ; evecs = np.identity(2)
+    while np.abs((M[0]/M[1])-(M_last[0]/M_last[1]))>converge_radius and i < maxiter:
         M_last = M
-        M, evecs = _M_calc_2d(p, q)
+        M, evecs_new = _M_calc_2d(p, q) 
+        evecs = [np.linalg.inv(np.array(evecs_new)).dot(v) for v in evecs]
+
         q_last = q
-        p = _rotate_coords(evecs, p, is_2d=True)
+        p = _rotate_coords(evecs_new, p, is_2d=True)
         q = _q_calc_2d(p[:,0], p[:,1], M)
         i+=1
 
     return M, evecs
 
 def _q_calc_2d(x, y, M):
-    M.sort()
     ab = np.sqrt(M[0]/M[1])
 
     return np.array([np.sqrt(x[i]**2 + (y[i]/ab)**2) for i in range(len(x))])
@@ -156,8 +157,32 @@ def _M_calc_2d(p, q):
     M[1,1] = np.sum(p[:,1]*p[:,1]/q**2)
 
     eigenvalues, eigenvectors = np.linalg.eig(M)
+    eigenvalues, eigenvectors = _sort_evals_and_evecs(np.array(eigenvalues), eigenvectors)
 
-    return np.array(eigenvalues), eigenvectors
+    return eigenvalues, eigenvectors
 
 
+#sorts the eigenvalues and eigenvectors as:
+#  M => (Mx, My, Mz)
+#  v => (vx, vy, vz)
+def _sort_evals_and_evecs(M, evecs_new):
+    
+    if len(M)==3:
+        pass
+    elif len(M)==2:
+        sorted_M = [0, 0]
+        sorted_evecs = [0,0]
+
+    for m, v in zip(M, evecs_new):
+        vp = [round(vi) for vi in v]
+        if abs(vp[0]) == 1.0: 
+            sorted_M[0] = m ; sorted_evecs[0] = v
+        elif abs(vp[1]) == 1.0:
+            sorted_M[1] = m ; sorted_evecs[1] = v
+        else:
+            print("ERROR: ")
+            exit()
+
+    return sorted_M, sorted_evecs
+    
 
