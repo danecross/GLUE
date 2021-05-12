@@ -64,10 +64,10 @@ def get_stars(p, radius=None, lower_shell=0, upper_shell=1):
 
 def _q_calc(x, y, z, M):
     
-    ac = np.sqrt(M[0]/M[2])
-    bc = np.sqrt(M[1]/M[2])
+    ba = np.sqrt(M[1]/M[0])
+    ca = np.sqrt(M[2]/M[0])
 
-    return np.array([np.sqrt(x[i]**2 + (y[i]/ac)**2 + (z[i]/bc)**2) for i in range(len(z))])
+    return np.array([np.sqrt(x[i]**2 + (y[i]/ba)**2 + (z[i]/ca)**2) for i in range(len(z))])
 
 def _M_calc(p, q):
 
@@ -143,7 +143,7 @@ def iterate_2D(p, maxiter=25, converge_radius=10e-4):
     return M, evecs
 
 def _q_calc_2d(x, y, M):
-    ab = np.sqrt(M[0]/M[1])
+    ab = np.sqrt(M[1]/M[0])
 
     return np.array([np.sqrt(x[i]**2 + (y[i]/ab)**2) for i in range(len(x))])
 
@@ -157,21 +157,20 @@ def _M_calc_2d(p, q):
     M[1,1] = np.sum(p[:,1]*p[:,1]/q**2)
 
     eigenvalues, eigenvectors = np.linalg.eig(M)
-    eigenvalues, eigenvectors = _sort_evals_and_evecs(np.array(eigenvalues), eigenvectors)
-
-    return eigenvalues, eigenvectors
-
+    return _sort_evals_and_evecs(np.array(eigenvalues), eigenvectors)
 
 #sorts the eigenvalues and eigenvectors as:
 #  M => (Mx, My, Mz)
 #  v => (vx, vy, vz)
 def _sort_evals_and_evecs(M, evecs_new):
     
-    if len(M)==3:
-        pass
-    elif len(M)==2:
-        sorted_M = [0, 0]
-        sorted_evecs = [0,0]
+    if np.abs(evecs_new[0][0]) > 0.5 and np.abs(evecs_new[0][1])>0.5:
+        # this is a big rotation so the below algorithm won't work. 
+        sorted_M = np.array([Mi for Mi, _ in sorted(zip(M, evecs_new))])
+        sorted_evecs = [vi for _, vi in sorted(zip(M, evecs_new))]
+        return sorted_M, sorted_evecs 
+
+    sorted_M = np.zeros(len(M)) ; sorted_evecs = [0]*len(M)
 
     for m, v in zip(M, evecs_new):
         vp = [round(vi) for vi in v]
@@ -180,9 +179,10 @@ def _sort_evals_and_evecs(M, evecs_new):
         elif abs(vp[1]) == 1.0:
             sorted_M[1] = m ; sorted_evecs[1] = v
         else:
-            print("ERROR: ")
-            exit()
+            sorted_M[2] = m ; sorted_evecs[2] = v
 
     return sorted_M, sorted_evecs
     
+
+
 
