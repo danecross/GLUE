@@ -4,7 +4,7 @@ from plotting_aid import plot_axes_from_evecs_2D
 
 import sys
 from matplotlib import pyplot as plt
-plt.style.use('../../../../default_stylesheet.mplstyle')
+plt.style.use('../../../default_stylesheet.mplstyle')
 fig = plt.gcf() ; fig.set_size_inches(50,25)
 
 
@@ -100,7 +100,7 @@ for lower_ellipse in lower_ellipses:
 
 plt.clf()
 
-plt.style.use('../../../../default_stylesheet.mplstyle')
+plt.style.use('../../../default_stylesheet.mplstyle')
 fig = plt.gcf() ; fig.set_size_inches(50,25)
 
 plt.plot([i for i in range(2, 21, 3)], Ms)

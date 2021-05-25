@@ -10,7 +10,7 @@ from axis_convergence import _rotate_coords, iterate_2D
 from plotting_aid import plot_axes_from_evecs_2D
 import ellipse_functions as ef
 
-plt.style.use('../../../../default_stylesheet.mplstyle')
+plt.style.use('../../../default_stylesheet.mplstyle')
 plt.gcf().set_size_inches(20,20)
 
 np.random.seed(42)

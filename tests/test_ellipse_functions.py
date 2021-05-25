@@ -31,13 +31,13 @@ for r, x, y in zip(radii, xp, yp):
 #circle: 
 a = b = 10
 ellipse = [a, b]
-result_x, result_y = ef.evals_const_density_full(ellipse)
+result_x, result_y = ef.evals_const_density_full(ellipse[0], ellipse[1])
 assert np.abs(result_x[0]-result_y[0]) < result_x[1] + result_y[1]
 
 # ellipse:
 a = 20 ; b = 10
 ellipse = [a,b]
-result_x, result_y = ef.evals_const_density_full(ellipse)
+result_x, result_y = ef.evals_const_density_full(ellipse[0], ellipse[1])
 
 assert np.abs((a/b)**2 - result_x[0]/result_y[0]) < result_x[1] + result_y[1] \
         or np.abs((a/b)**2 - result_y[0]/result_x[0]) < result_x[1] + result_y[1]
