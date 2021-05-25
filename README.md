@@ -1,6 +1,6 @@
 
 
-# Globular Clusters with a Self-Interacting Dark Matter Halo
+# GLobular clUster dynamics Eigen-analysis (GLUE)
 
 Documentation in the wiki.
 
