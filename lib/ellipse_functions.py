@@ -18,8 +18,6 @@ def eccentricity(a, b):
 # point on an ellipse and angle theta from 
 # x-axis with (semi-major, semiminor) = (a, b)
 def r(theta, a, b):
-    #e = eccentricity(a, b)
-    #return b/np.sqrt(1-(e*np.cos(theta))**2)
     return a*b/np.sqrt((b*np.cos(theta))**2 + (a*np.sin(theta))**2)
 
 # cuts out all stars within lower_ellipse (with
@@ -52,6 +50,44 @@ def ellipse_cut(p, lower_ellipse, upper_ellipse):
     cut = [i and o for i,o in zip(inner_cut, outer_cut)]
     
     return p[cut] 
+
+
+from scipy import integrate
+from numpy import sin, cos, pi
+
+# finds the eigenvalues of the mass matrix
+# for an ellipse of the given dimensions. Assumes
+# constant density
+def evals_const_density_full(a, b):
+    
+    x_result = integrate.quad(f_xx, 0, 2*pi, args = (a, b))
+    y_result = integrate.quad(f_yy, 0, 2*pi, args = (a, b))
+
+    return [x_result, y_result]
+
+def f_xx (theta, a, b):
+
+    e = eccentricity(a,b)
+    return b**2 * sin(theta)**2 / (1-(e*cos(theta))**2)**2
+    
+def f_yy (theta, a, b):
+
+    e = eccentricity(a,b)
+    return b**2 * cos(theta)**2 / (1-(e*cos(theta))**2)**2
+
+# finds the eigenvalues of the mass matrix 
+# for a shell of the given dimensions. Assumes
+# constant density
+def evals_constant_density_shell(lower_ellipse, upper_ellipse):
+
+    inner_evals = evals_const_density_full(*lower_ellipse)
+    outer_evals = evals_const_density_full(*upper_ellipse)
+
+    evals = [outer_evals[i][0]-inner_evals[i][0] for i in range(len(inner_evals))]
+    error = [outer_evals[i][1]**2+inner_evals[i][1]**2 for i in range(len(inner_evals))]
+
+    return evals, error
+
 
 
 
