@@ -1,6 +1,6 @@
 
-data/outputs_*
-data/pickled_data/*/positions.pkl
-
 **/.DS_Store
+
+data/**
+plots/**
 
