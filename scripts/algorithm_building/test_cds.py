@@ -8,7 +8,7 @@ plt.style.use('../../../../default_stylesheet.mplstyle')
 fig = plt.gcf() ; fig.set_size_inches(50,25)
 
 
-img_path = "cds_test_pngs/helper_func_pngs/"
+img_path = "cds_test_pngs/"
 
 def plot_all(pos, vecs, M, name, a):
     plt.gcf().set_size_inches(20,20)
