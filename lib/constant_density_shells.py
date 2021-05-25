@@ -5,12 +5,6 @@ import ellipse_functions as ef
 import axis_convergence as ac
 import numpy as np
 
-# input: 2D data, lower ellipse cut, spacing between the semi-major axes
-# output: the semi-minor axis which determines the upper cut. This semi-minor
-#         axis creates a cut that is as close to a constant density profile as 
-#         possible
-def shell_fit2D(p, lower_ellipse, a_diff, max_iter=25, converge_radius=1e-4):
-    # TODO
 
 # returns the expected eigenvalues for a specified shape with constant density
 def constant_density_eigs(lower_ellipse, upper_ellipse, num_stars):
