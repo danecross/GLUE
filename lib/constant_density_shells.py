@@ -19,14 +19,14 @@ def create_const_density_distribution(lower_ellipse, upper_ellipse, num_stars):
     A = np.pi * (upper_ellipse[0] * upper_ellipse[1] - lower_ellipse[0] * lower_ellipse[1])
     rho = num_stars/A #<-- number density
 
-    box = create_const_box(2*upper_ellipse[0], 2*upper_ellipse[1], rho)
+    box = create_const_box(max(2*upper_ellipse[0], 2*upper_ellipse[1]), rho)
 
     return ef.ellipse_cut(box, lower_ellipse, upper_ellipse)
 
-def create_const_box(w, h, rho):
+def create_const_box(w, rho):
 
     x = np.linspace(-w/2, w/2, int(w*np.sqrt(rho)))
-    y = np.linspace(-h/2, h/2, int(h*np.sqrt(rho)))
+    y = np.linspace(-w/2, w/2, int(w*np.sqrt(rho)))
     
     #return cartesian coordinates of x and y
     return np.transpose([np.tile(x, len(y)), np.repeat(y, len(x))])

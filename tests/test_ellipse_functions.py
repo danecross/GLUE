@@ -1,5 +1,3 @@
-
-
 import numpy as np
 import ellipse_functions as ef
 
@@ -25,6 +23,10 @@ xp, yp = ef.polar_to_cartesian(rl, theta)
 for r, x, y in zip(radii, xp, yp):
     assert np.abs(r-(x**2+y**2)**(1/2)) < 10e-4
 
+# test tilted ellipse
+a = 10 ; b = 5 ; alpha = np.pi/4
+r_45 = ef.r(np.pi/4, a, b, alpha)
+assert np.abs(r_45-a) < 10e-4
 
 # test eigenvalue finding
 
