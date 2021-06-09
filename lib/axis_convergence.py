@@ -166,8 +166,12 @@ def _sort_evals_and_evecs(M, evecs_new):
     
     if np.abs(evecs_new[0][0]) > 0.5 and np.abs(evecs_new[0][1])>0.5:
         # this is a big rotation so the below algorithm won't work. 
-        sorted_M = np.array([Mi for Mi, _ in sorted(zip(M, evecs_new))])
-        sorted_evecs = [vi for _, vi in sorted(zip(M, evecs_new))]
+        try:
+            sorted_M = np.array([Mi for Mi, _ in sorted(zip(M, evecs_new))])
+            sorted_evecs = [vi for _, vi in sorted(zip(M, evecs_new))]
+        except ValueError: # both of the M values are the same
+            return M, evecs_new
+
         return sorted_M, sorted_evecs 
 
     sorted_M = np.zeros(len(M)) ; sorted_evecs = [0]*len(M)
