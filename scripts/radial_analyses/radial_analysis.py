@@ -1,5 +1,5 @@
 import numpy as np
-from snapshot_analysis import get_eccentricities
+from snapshot_analysis import eigen_analyze_cuts
 
 coords = np.load("../data/ethan_data/corrected_coords.npy", allow_pickle=True)
 x = [coords[i][0] for i in range(len(coords))]
