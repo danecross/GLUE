@@ -22,6 +22,13 @@ def plot_all(pos, vecs, M, name, a):
     plt.gca().set_aspect('equal', 'box')
     plt.savefig(name)
 
+
+###################################
+####                           ####
+#### BASIC (NON-ROTATED) TESTS ####
+####                           ####
+###################################
+
 #########################
 ###  create test case ###
 #########################
@@ -106,6 +113,14 @@ fig = plt.gcf() ; fig.set_size_inches(50,25)
 plt.plot([i for i in range(2, 21, 3)], Ms)
 plt.title("axis ratios as a function of semi-minor axis")
 plt.savefig(img_path+"series_ar_" + str(num_stars) + ".png")
+
+
+
+###################################
+####                           ####
+####       ROTATED TESTS       ####
+####                           ####
+###################################
 
 
 

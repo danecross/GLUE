@@ -32,7 +32,7 @@ def plot_all(pos, vecs, M, name, a):
 
 rotation_angle = np.pi/3
 lower_ellipse = (10, 5, rotation_angle)
-upper_ellipse = (30, 25)
+upper_ellipse = (30, 25, rotation_angle)
 num_stars = int(sys.argv[1])
 
 
