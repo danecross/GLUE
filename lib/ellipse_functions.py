@@ -18,7 +18,7 @@ def eccentricity(a, b):
 # returns the distance from the origin for a 
 # point on an ellipse and angle theta from 
 # x-axis with (semi-major, semiminor) = (a, b)
-def r(theta, a, b, alpha=0, center = (0,0)):
+def r(theta, a, b, alpha=0):
     return a*b/np.sqrt((b*np.cos(theta-alpha))**2 + (a*np.sin(theta-alpha))**2) 
     
 # cuts out all stars within lower_ellipse (with
