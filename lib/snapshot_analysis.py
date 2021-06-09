@@ -2,7 +2,12 @@
 import axis_convergence as ac
 import numpy as np
 
-def get_eccentricities(radial_cuts, x, y):
+
+# returns the eigenvalues, eigenvectors, and separated coordinates 
+# of groups of stars from a snapshot. The groups are radial cuts
+# of the data in the snapshot
+
+def eigen_analyze_cuts(radial_cuts, x, y):
     r = np.array([np.sqrt(x[i]**2 + y[i]**2) for i in range(len(x))])
     x_sort = np.array([x for _,x in zip(r,x)])
     y_sort = np.array([y for _,y in zip(r,y)])
@@ -25,21 +30,26 @@ def get_eccentricities(radial_cuts, x, y):
 
     groups = [np.asarray(g) for g in groups]
 
-    M = [ac.iterate_2D(group)[0] for group in groups]
-    eccentricities = [1-(m[0]/m[1]) for m in M]
+    results = [ac.iterate_2D(group) for group in groups]
 
-    return eccentricities, groups
+    M = [results[i][0] for i in range(len(results))]
+    evecs = [results[i][1] for i in range(len(results))]
 
-def get_eccentricities(x, y, hmr=None, n_divs=1, is_percentile=False):
+    return M, evecs, groups
+
+def eigen_analyze_cuts(x, y, hmr=None, n_divs=1, is_percentile=False):
 
     p = np.array(list(zip(x,y))) 
     groups = [ac.get_stars(p, lower_shell=x*(1/n_divs), upper_shell=(x+1)*(1/n_divs), \
                 is_percentile=is_percentile) for x in range(0,n_divs)]
     
-    M = [ac.iterate_2D(group)[0] for group in groups]
-    eccentricities = [1-(m[0]/m[1]) for m in M]
+    results = [ac.iterate_2D(group) for group in groups]
 
-    return eccentricities, groups
+    M = [results[i][0] for i in range(len(results))]
+    evecs = [results[i][1] for i in range(len(results))]
+    
+    return M, evecs, groups
+
 
 
 
