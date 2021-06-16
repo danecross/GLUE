@@ -27,8 +27,6 @@ def plot_all(p, lower_ellipse, upper_ellipse, name):
     plt.legend()
     plt.savefig(img_path+name)
 
-
-
 ##########################
 ## test basic shell fit ##
 ##########################
@@ -38,7 +36,7 @@ upper_ellipse = (lower_ellipse[0]+sep, (lower_ellipse[0]+sep)*lower_ellipse[1]/l
 p = cds.create_const_density_distribution(lower_ellipse, upper_ellipse, 3000)
 
 lower_ellipse = (90, 90) ; sep = 150
-upper_ellipse_fit = cds.shell_fit_2D(p, lower_ellipse, sep, parallelize=True)
+upper_ellipse_fit = cds.shell_fit_2D(p, lower_ellipse, sep)
 plot_all(p, lower_ellipse, upper_ellipse_fit, "fit_basic.png")
 plt.cla()
 
@@ -52,34 +50,7 @@ p = cds.create_const_density_distribution(lower_ellipse, upper_ellipse, 3000)
 
 lower_ellipse = (90, 90) ; sep = 150
 upper_ellipse_fit = cds.shell_fit_2D(p, lower_ellipse, sep)
-print("ellipse:", upper_ellipse_fit)
 
 plot_all(p, lower_ellipse, upper_ellipse_fit, "fit_rotated.png")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
