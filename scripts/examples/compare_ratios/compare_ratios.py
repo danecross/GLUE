@@ -33,6 +33,7 @@ p = np.array(p)
 
 expected_ratios = [] ; actual_ratios = []
 expected_evals = [] ; actual_evals = []
+errs = []
 i = list(a_s).index(min(a_s))
 lower_ellipse = (a_s[i], b_s[i], alpha_s[i])
 for upper_ellipse in sorted(zip(a_s, b_s, alpha_s))[1:]:
@@ -40,7 +41,7 @@ for upper_ellipse in sorted(zip(a_s, b_s, alpha_s))[1:]:
     selection = ef.ellipse_cut(p, lower_ellipse, upper_ellipse) 
 
     M_actual, evecs_actual = ac.iterate_2D(selection)
-    M_exp, evecs_exp = cds.constant_density_eigs(lower_ellipse, upper_ellipse, len(selection)*10) 
+    M_exp, evecs_exp, errors = cds.constant_density_eigs(lower_ellipse, upper_ellipse, len(selection), num_straps=5) 
 
     expected_ratios += [M_exp]
     actual_ratios += [M_actual]
@@ -48,13 +49,16 @@ for upper_ellipse in sorted(zip(a_s, b_s, alpha_s))[1:]:
     expected_evals += [evecs_exp]
     actual_evals += [evecs_actual]
 
+    errs += [errors]
+
 expected_ratios = np.array(expected_ratios)
 actual_ratios = np.array(actual_ratios)
 expected_evals = np.array(expected_evals)
 actual_evals = np.array(actual_evals)
+errs = np.array(errs)
 
 np.save("actual_M.npy",actual_ratios)
 np.save("expected_M.npy",expected_ratios)
 np.save("expected_evals.npy",expected_evals)
 np.save("actual_evals.npy",actual_evals)
-
+np.save("errors.npy",errs)
