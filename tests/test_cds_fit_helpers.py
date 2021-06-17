@@ -34,14 +34,14 @@ def plot_all(p, lower_ellipse, upper_ellipse, name):
 #########################
 
 lower_ellipse = (200, 100, np.pi/6) ; sep = 100
-upper_ellipse = (lower_ellipse[0]+sep, (lower_ellipse[0]+sep)*lower_ellipse[1]/lower_ellipse[0], np.pi/3)
+upper_ellipse = (lower_ellipse[0]+2*sep, (lower_ellipse[0]+2*sep)*lower_ellipse[1]/lower_ellipse[0], np.pi/3)
 p = cds.create_const_density_distribution(lower_ellipse, upper_ellipse, 3000)
 
 #######################
 # test rotate_coords ##
 #######################
 
-p0 = cds.rotate_coords(p, np.pi/6)
+p0 = cds._rotate_coords(p, np.pi/6)
 
 plt.plot(p[:,0], p[:,1], '.', label="original coordinates")
 plt.plot(p0[:,0], p0[:,1], '.', label="rotated coordinates")
@@ -54,7 +54,7 @@ plt.cla()
 ## test rotate_all ##
 #####################
 
-p0, a_lower, a_upper, b_lower, b_upper, alpha = cds.rotate_all(p, lower_ellipse, sep)
+p0, a_lower, a_upper, b_lower, b_upper, alpha = cds._rotate_all(p, lower_ellipse, sep, None)
 upper_ellipse = (a_upper, b_upper, alpha) ; lower_ellipse = (a_lower, b_lower)
 plot_all(p0, lower_ellipse, upper_ellipse, "rotate_all.png")
 

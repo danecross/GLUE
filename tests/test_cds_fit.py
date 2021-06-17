@@ -45,7 +45,7 @@ plt.cla()
 ############################
 
 lower_ellipse = (200, 100, np.pi/6) ; sep = 100
-upper_ellipse = (lower_ellipse[0]+sep, (lower_ellipse[0]+sep)*lower_ellipse[1]/lower_ellipse[0], np.pi/3)
+upper_ellipse = (lower_ellipse[0]+2*sep, (lower_ellipse[0]+2*2*sep)*lower_ellipse[1]/lower_ellipse[0], np.pi/3)
 p = cds.create_const_density_distribution(lower_ellipse, upper_ellipse, 3000)
 
 lower_ellipse = (90, 90) ; sep = 150
