@@ -7,22 +7,19 @@ import numpy as np
 import os
 from numpy.random import rand
 
-def shell_fit_2D(p, lower_ellipse, sep, guesses_per_branch=50, numiter=2, b_resolution=None, alpha_resolution=2*np.pi/3):
+def shell_fit_2D(p, lower_ellipse, sep, guesses_per_branch=50, numiter=2, b_upper_guess=None, b_resolution=None, alpha_resolution=2*np.pi/3):
     
-    p, a_lower, a_upper, b_lower, b_upper, alpha_upper = _rotate_all(p, lower_ellipse, sep)
+    p, a_lower, a_upper, b_lower, b_upper, alpha_upper = _rotate_all(p, lower_ellipse, sep, b_upper_guess)
 
     b_resolution = sep if b_resolution is None else b_resolution ; alpha = alpha_upper
     for i in range(numiter):
         
         print(f"iteration {i} \n\tb resolution: \t\t{b_resolution} \n\talpha_resolution: \t{alpha_resolution}")
 
-        #take guesses
         bs, alphas = _generate_guesses(b_upper, b_resolution, alpha_upper, alpha_resolution, guesses_per_branch)
-
-        #test guesses
         b_upper, alpha_upper = _test_guesses(p, a_lower, b_lower, a_upper, bs, alphas)
-
-        #increase resolution
+        
+        # update resolution
         b_resolution = b_resolution/(guesses_per_branch) ; alpha_resolution = alpha_resolution/(guesses_per_branch)
 
         print()
@@ -67,9 +64,10 @@ def _calculate_differences(p, a_lower, b_lower, a_upper, b_upper, alpha):
 
     return np.abs(actual_ratio-constant_density_ratio)
 
-def _rotate_all(p, lower_ellipse, sep):
+def _rotate_all(p, lower_ellipse, sep, b_upper_guess):
     a_lower = lower_ellipse[0] ; b_lower = lower_ellipse[1] ; alpha = 0
-    a_upper = a_lower + sep ; b_upper = a_upper * b_lower/a_lower 
+    a_upper = a_lower + sep 
+    b_upper = a_upper * b_lower/a_lower if b_upper_guess is None else b_upper_guess
 
     if len(lower_ellipse) == 3:
         alpha = lower_ellipse[2]
