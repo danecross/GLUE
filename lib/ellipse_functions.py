@@ -2,6 +2,8 @@
 import numpy as np
 from numpy import cos, sin
 
+import sys, os
+
 FULL_THETA = np.array([2*np.pi*(x/100) for x in range(0,101)])
 
 # returns (x, y) coordinates given (r, theta)
